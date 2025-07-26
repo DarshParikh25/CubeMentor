@@ -1,8 +1,14 @@
-import { useState, type JSX } from 'react'
+import { useContext, useEffect, type JSX } from 'react'
+import AppContext, { type AppContextType } from '../context/AppContext';
 
 const CubeFormation = (): JSX.Element => {
-    const [size, setSize] = useState<number>(3);
-    const [color, setColor] = useState<string | null>(null);
+    const context: AppContextType | undefined = useContext(AppContext)
+
+    if(!context) {
+        return <div>Loading...</div>
+    }
+
+    const { size, setSize, color, setColor, cube, setCube } = context;
 
     const colors: [string, string][] = [
         ['#fff', 'White'],
@@ -13,13 +19,30 @@ const CubeFormation = (): JSX.Element => {
         ['#ff7300', 'Orange']
     ]
 
-    const faces = (): JSX.Element => {
+    useEffect(() => {
+        setCube(
+            Array.from({ length: 6 }, () => (
+                Array(size * size).fill('#ccc')
+            ))
+        )
+    }, [size, setCube])
+
+    const handleChangeColor = (index: number, i: number): void => {
+        if(color) {
+        const newCube = [...cube];
+        newCube[index][i] = color;
+        setCube(newCube);
+        }
+    }
+
+    const faces = (faceIndex: number): JSX.Element => {
         return (
         <div className={`w-[150px] h-[150px] border-2 border-black bg-gray-300 grid grid-cols-${size}`}>
             {
-            Array(size * size).map((pieceColor: string, i: number) => (
+            cube[faceIndex].map((pieceColor: string, i: number) => (
                 <div 
-                    key={i} 
+                    key={i}
+                    onClick={() => {handleChangeColor(faceIndex, i); console.log(cube)}}
                     className={`border border-black flex min-w-[37.5px] min-h-[37.5px] w-full h-full cursor-pointer`}
                     style={{ backgroundColor: pieceColor }}
                 ></div>
@@ -30,7 +53,7 @@ const CubeFormation = (): JSX.Element => {
     }
 
     return (
-        <section className="grid xl:grid-cols-[0.75fr_1.25fr] grid-cols-1 py-20 min-h-[85vh]">
+        <section className="grid xl:grid-cols-[0.75fr_1.25fr] grid-cols-1 py-20 min-h-[85vh] gap-10 xl:gap-0">
             <div className=" flex flex-col gap-10 items-center">
                 {/* Size Selection */}
                 <form className="w-[60%] flex flex-col gap-2">
@@ -69,12 +92,12 @@ const CubeFormation = (): JSX.Element => {
             {/* Rubik's Cube Layout */}
             <div className="w-full flex justify-center">
                 <div className="grid grid-cols-4 grid-rows-3 gap-0.5 w-[600px] h-[450px]">
-                <div className="col-start-2 row-start-1">{faces()}</div>
-                <div className="col-start-1 row-start-2">{faces()}</div>
-                <div className="col-start-2 row-start-2">{faces()}</div>
-                <div className="col-start-3 row-start-2">{faces()}</div>
-                <div className="col-start-4 row-start-2">{faces()}</div>
-                <div className="col-start-2 row-start-3">{faces()}</div>
+                <div className="col-start-2 row-start-1">{faces(0)}</div>
+                <div className="col-start-1 row-start-2">{faces(1)}</div>
+                <div className="col-start-2 row-start-2">{faces(2)}</div>
+                <div className="col-start-3 row-start-2">{faces(3)}</div>
+                <div className="col-start-4 row-start-2">{faces(4)}</div>
+                <div className="col-start-2 row-start-3">{faces(5)}</div>
                 </div>
             </div>
         </section>
