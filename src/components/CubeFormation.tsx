@@ -22,33 +22,36 @@ const CubeFormation = (): JSX.Element => {
     useEffect(() => {
         setCube(
             Array.from({ length: 6 }, () => (
-                Array(size * size).fill('#ccc')
+                Array(size * size).fill('#7c7f7e')
             ))
         )
     }, [size, setCube])
 
     const handleChangeColor = (index: number, i: number): void => {
         if(color) {
-        const newCube = [...cube];
-        newCube[index][i] = color;
-        setCube(newCube);
+            const newCube = [...cube];
+            newCube[index][i] = color;
+            setCube(newCube);
         }
     }
 
     const faces = (faceIndex: number): JSX.Element => {
         return (
-        <div className={`w-[150px] h-[150px] border-2 border-black bg-gray-300 grid grid-cols-${size}`}>
-            {
-            cube[faceIndex].map((pieceColor: string, i: number) => (
-                <div 
-                    key={i}
-                    onClick={() => {handleChangeColor(faceIndex, i); console.log(cube)}}
-                    className={`border border-black flex min-w-[37.5px] min-h-[37.5px] w-full h-full cursor-pointer`}
-                    style={{ backgroundColor: pieceColor }}
-                ></div>
-            ))
-            }
-        </div>
+            <div 
+                className={`w-[150px] h-[150px] border-2 border-black bg-gray-300 grid`}
+                style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}
+            >
+                {
+                    cube[faceIndex].map((pieceColor: string, i: number) => (
+                        <div 
+                            key={i}
+                            onClick={() => {handleChangeColor(faceIndex, i); console.log(cube)}}
+                            className={`border border-black flex min-w-[37.5px] min-h-[37.5px] w-full h-full cursor-pointer`}
+                            style={{ backgroundColor: pieceColor }}
+                        ></div>
+                    ))
+                }
+            </div>
         )
     }
 
@@ -92,12 +95,12 @@ const CubeFormation = (): JSX.Element => {
             {/* Rubik's Cube Layout */}
             <div className="w-full flex justify-center">
                 <div className="grid grid-cols-4 grid-rows-3 gap-0.5 w-[600px] h-[450px]">
-                <div className="col-start-2 row-start-1">{faces(0)}</div>
-                <div className="col-start-1 row-start-2">{faces(1)}</div>
-                <div className="col-start-2 row-start-2">{faces(2)}</div>
-                <div className="col-start-3 row-start-2">{faces(3)}</div>
-                <div className="col-start-4 row-start-2">{faces(4)}</div>
-                <div className="col-start-2 row-start-3">{faces(5)}</div>
+                    <div className="col-start-2 row-start-1 relative z-20">{faces(0)}<span className='absolute text-white -top-6 text-center w-full z-10'>Back</span></div>
+                    <div className="col-start-1 row-start-2 relative z-20">{faces(1)}<span className='absolute text-white -left-8 bottom-[45%] w-fit z-10'>Left</span></div>
+                    <div className="col-start-2 row-start-2 relative">{faces(2)}</div>
+                    <div className="col-start-3 row-start-2 relative z-20">{faces(3)}<span className='absolute text-white -top-6 text-center w-full z-10'>Right</span></div>
+                    <div className="col-start-4 row-start-2 relative z-20">{faces(4)}<span className='absolute text-white bottom-[45%] -right-8 text-center w-fit z-10'>Top</span></div>
+                    <div className="col-start-2 row-start-3 relative z-20">{faces(5)}<span className='absolute text-white -bottom-6 text-center w-full z-10'>Front</span></div>
                 </div>
             </div>
         </section>

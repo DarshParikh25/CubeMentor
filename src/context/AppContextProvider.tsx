@@ -10,7 +10,7 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
     const [color, setColor] = useState<string | null>(null);
     const [cube, setCube] = useState<string[][]>(
         Array.from({ length: 6 }, () => (
-        Array(9).fill('#ccc')
+            Array(9).fill('#7c7f7e')
         ))
     );
 
