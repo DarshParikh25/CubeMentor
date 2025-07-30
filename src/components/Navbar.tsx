@@ -1,19 +1,15 @@
-import { useContext, type JSX } from 'react'
-import AppContext, { type AppContextType } from '../context/AppContext';
+import type { JSX } from 'react';
+import { useAppContext } from '../hooks/useAppContext';
 
 const Navbar = (): JSX.Element => {
-    const context: AppContextType | undefined = useContext(AppContext)
-
-    if(!context) {
-        return <div>Loading...</div>
-    }
-
-    const { size, setCube } = context;
+    const { setSize, setCube } = useAppContext();
 
     const handleReset = (): void => {
+        setSize(3);
+        
         setCube(
             Array.from({ length: 6 }, () => (
-                Array(size * size).fill('#ccc')
+                Array(3 * 3).fill('#7c7f7e')
             ))
         )
     }
