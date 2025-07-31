@@ -6,7 +6,9 @@ export type AppContextType = {
     color: string | null,
     setColor: React.Dispatch<React.SetStateAction<string | null>>,
     cube: string[][],
-    setCube: React.Dispatch<React.SetStateAction<string[][]>>
+    setCube: React.Dispatch<React.SetStateAction<string[][]>>,
+    moves: string[],
+    setMoves: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);

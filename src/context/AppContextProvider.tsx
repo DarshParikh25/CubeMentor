@@ -13,6 +13,7 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
             Array(9).fill('#7c7f7e')
         ))
     );
+    const [moves, setMoves] = useState<string[]>([]);
 
     const value: AppContextType = {
         size, 
@@ -20,7 +21,9 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
         color, 
         setColor, 
         cube, 
-        setCube
+        setCube,
+        moves,
+        setMoves
     }
 
     return (

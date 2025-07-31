@@ -1,14 +1,8 @@
-import { useContext, useEffect, type JSX } from 'react'
-import AppContext, { type AppContextType } from '../context/AppContext';
+import { useState, useEffect, type JSX } from 'react'
+import { useAppContext } from '../hooks/useAppContext';
 
 const CubeFormation = (): JSX.Element => {
-    const context: AppContextType | undefined = useContext(AppContext)
-
-    if(!context) {
-        return <div>Loading...</div>
-    }
-
-    const { size, setSize, color, setColor, cube, setCube } = context;
+    const { size, setSize, color, setColor, cube, setCube } = useAppContext();
 
     const colors: [string, string][] = [
         ['#fff', 'White'],
@@ -18,6 +12,7 @@ const CubeFormation = (): JSX.Element => {
         ['#ff0', 'Yellow'],
         ['#ff7300', 'Orange']
     ]
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setCube(
@@ -86,10 +81,12 @@ const CubeFormation = (): JSX.Element => {
                 </div>
 
                 {/* Error box */}
-                <div className="w-[60%] border border-[#7c7f7e] rounded-md px-3 py-1 bg-[#ff636350] flex justify-between items-center">
-                    <p>Hey! There's an error.</p>
-                    <img src="/warning.png" alt="warning-icon" className="w-4" />
-                </div>
+                {error && (
+                    <div className="w-[60%] border border-[#7c7f7e] rounded-md px-3 py-1 bg-[#ff636350] flex justify-between items-center">
+                        <p>{error}</p>
+                        <img src="/warning.png" alt="warning-icon" className="w-4" />
+                    </div>
+                )}
             </div>
 
             {/* Rubik's Cube Layout */}
